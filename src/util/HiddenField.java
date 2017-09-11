@@ -66,7 +66,7 @@ public class HiddenField extends Field {
         }catch (ArrayIndexOutOfBoundsException e){
             return true;
         }
-        
+
     }
 
     public void setAllCellsClosed(){
@@ -78,7 +78,6 @@ public class HiddenField extends Field {
         }
     }
 
-    @Override
     public void setClosed(int i, int j) {
         mask[i][j] = Constants.OPEN_CELL;
     }

@@ -7,13 +7,16 @@ import java.util.Set;
  * Created by ekaterina on 8/30/17.
  */
 public class Cell {
-    //private int status = util.Status.FREE;
     private Set<Integer> statuses = new HashSet<Integer>();
 
     public Cell() {
         this.setFree();
     }
 
+    /**
+     * Adds status to cell
+     * @param status from public class STATUS
+     */
     public void addStatus(int status) {
         if(statuses.contains(Status.FREE)){
             statuses.clear();
@@ -21,9 +24,20 @@ public class Cell {
         statuses.add(status);
     }
 
-    public void eraseStatus(int status) {
+    /**
+     * Removes character from cell and adds there FREE status, if cell is empty
+     * @param status from public class STATUS
+     */
+    public void deleteCharacter(int status) {
         statuses.remove(status);
+        if (statuses.isEmpty())
+            statuses.add(Status.FREE);
     }
+
+
+    /**
+     * Getters and setters
+     */
 
     public void setFree(){
         statuses.clear();
@@ -47,11 +61,7 @@ public class Cell {
         return statuses.contains(Status.WOOD_CUTTER);
     }
 
-    public void deleteCharacter(int status) {
-        statuses.remove(status);
-        if (statuses.isEmpty())
-            statuses.add(Status.FREE);
-    }
+
 
     public boolean isWolf() {
         return statuses.contains(Status.WOLF_RANGE) || statuses.contains(Status.WOLF);

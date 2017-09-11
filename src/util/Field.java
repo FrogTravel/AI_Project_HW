@@ -27,13 +27,14 @@ public class Field {
      */
     public void generateField(){
         initializeField();
-        generateGrannyPosition();
 
         generateWolfPosition();
         generateBearPosition();
 
         generateWoodCutter();
         generateFalseWoodCutter();
+
+        generateGrannyPosition();
     }
 
 
@@ -77,8 +78,13 @@ public class Field {
      */
     private void generateGrannyPosition(){
         Random random = new Random();
-        int x = random.nextInt(Constants.FIELD_SIZE);
-        int y = random.nextInt(Constants.FIELD_SIZE);
+        int x;
+        int y;
+
+        do {
+            x = random.nextInt(Constants.FIELD_SIZE);
+            y = random.nextInt(Constants.FIELD_SIZE);
+        }while (!field[x][y].isFree());
 
         field[x][y].addStatus(Status.GRANNY);
         Granny.setPosition(new Position(x, y));
@@ -124,7 +130,8 @@ public class Field {
             x = random.nextInt(Constants.FIELD_SIZE);
             y = random.nextInt(Constants.FIELD_SIZE);
         } while((field[x][y].isCharacter()) || ((x == 0) && (y == 1))
-                || ((x == 1) && (y == 0)) || ((x == 0) && (y == 0)));
+                || ((x == 1) && (y == 0)) || ((x == 0) && (y == 0))
+                || ((x== 1) && (y == 1)));
 
         field[x][y].addStatus(Status.BEAR);
         if(x > 0)
@@ -189,17 +196,26 @@ public class Field {
         WoodCutter.setFalsePosition(new Position(x, y));
     }
 
-    public void setGrannyPosition(Position position){
-        field[position.getX()][position.getY()].addStatus(Status.GRANNY);
+    /**
+     * Delete old position from field, and adds new position to new cell
+     * @param oldPosition where RRH was
+     * @param newPosition where she will be
+     */
+    public void changeRRHposition(Position oldPosition, Position newPosition) {
+        try {
+            field[oldPosition.getX()][oldPosition.getY()].deleteCharacter(Status.RRH);
+            field[newPosition.getX()][newPosition.getY()].addStatus(Status.RRH);
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Old Position: " + oldPosition.getX() + " " + oldPosition.getY());
+            System.out.println("New Position: " + newPosition.getX() + " " + newPosition.getY());
+        }
     }
 
-    public void setRealWoodCutterPosition(Position position){
-        field[position.getX()][position.getY()].addStatus(Status.WOOD_CUTTER);
-    }
 
-    public void setFalseWoodCutterPosition(Position position){
-        field[position.getX()][position.getY()].addStatus(Status.FALSE_WOOD_CUTTER);
-    }
+    /**
+     * Setters and getters
+     */
+
 
     public void setRRHPosition(Position position){
         field[position.getX()][position.getY()].addStatus(Status.RRH);
@@ -221,21 +237,8 @@ public class Field {
         field[x][y].addStatus(status);
     }
 
-    public void changeRRHposition(Position oldPosition, Position newPosition) {
-        try {
-            field[oldPosition.getX()][oldPosition.getY()].deleteCharacter(Status.RRH);
-            field[newPosition.getX()][newPosition.getY()].addStatus(Status.RRH);
-        }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Old Position: " + oldPosition.getX() + " " + oldPosition.getY());
-            System.out.println("New Position: " + newPosition.getX() + " " + newPosition.getY());
-        }
-    }
-
     public Cell getGranniesCell() {
         return field[Granny.getPosition().getX()][Granny.getPosition().getY()];
     }
 
-    public void setClosed(int i, int j) {
-        System.out.println("Can't close");
-    }
 }

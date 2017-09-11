@@ -3,7 +3,7 @@ package astar;
 import util.Position;
 
 /**
- * Created by ekaterina on 9/9/17.
+ * Node for A-Star algorithm
  */
 public class StarNode {
     private boolean isOpen = false;
@@ -19,6 +19,10 @@ public class StarNode {
     public StarNode() {
         position = new Position(-1, -1);
     }
+
+    /**
+     * Getters and Setters
+     */
 
     public boolean isOpen() {
         return isOpen;

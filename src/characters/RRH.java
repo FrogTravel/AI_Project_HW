@@ -22,7 +22,6 @@ public class RRH {
         grannyPosition = Granny.getPosition();
         woodCutterPosition = WoodCutter.getPositions();
 
-
         position = new Position(0, 0);
         field.setRRHPosition(position);
         field.addOpenCell(position);
@@ -33,6 +32,10 @@ public class RRH {
         return field;
     }
 
+    /**
+     * She change her position to one cell Down,
+     * checks her current cell
+     */
     public void goDown() {
         Position oldPosition = new Position(position.getX(), position.getY());
         position.change(position.getX() + 1, position.getY());
@@ -41,6 +44,10 @@ public class RRH {
         checkCurrentCell();
     }
 
+    /**
+     * She change her position to one cell Up,
+     * checks her current cell
+     */
     public void goUp() {
         Position oldPosition = new Position(position.getX(), position.getY());
         position.change(position.getX() - 1, position.getY());
@@ -49,6 +56,10 @@ public class RRH {
         checkCurrentCell();
     }
 
+    /**
+     * She change her position to one cell Right,
+     * checks her current cell
+     */
     public void goRight()  {
         Position oldPosition = new Position(position.getX(), position.getY());
         position.change(position.getX(), position.getY() + 1);
@@ -57,6 +68,10 @@ public class RRH {
         checkCurrentCell();
     }
 
+    /**
+     * She change her position to one cell Left,
+     * checks her current cell
+     */
     public void goLeft()  {
         Position oldPosition = new Position(position.getX(), position.getY());
         position.change(position.getX(), position.getY() - 1);
@@ -65,6 +80,9 @@ public class RRH {
         checkCurrentCell();
     }
 
+    /**
+     * Checks if current cell s busy with someone and acts
+     */
     private void checkCurrentCell()  {
         if(field.getCell(position).getStatuses().contains(Status.WOLF_RANGE))//TODO make more beautiful
            // throw new util.exceptions.GameOverException();
