@@ -18,10 +18,10 @@ public class Main {
 
 
     public static void main(String[] args) {
-        //startBacktrackSearchTests();
+        startBacktrackSearchTests();
         startAStarSearchTests();
+        System.out.println("Average of steps BACKTRACK: " + averageBacktrack);
         System.out.println("Average of steps A-STAR: " + averageAStar);
-        //System.out.println("Average of steps BACKTRACK: " + averageBacktrack);
     }
 
     /**

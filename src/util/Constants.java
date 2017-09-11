@@ -2,6 +2,7 @@ package util;
 
 /**
  * Created by ekaterina on 8/30/17.
+ * Class for Constants, so they can be changed easly
  */
 public class Constants {
     public final static int FIELD_SIZE = 9;

@@ -100,6 +100,9 @@ public class RRH {
            // throw new util.exceptions.GameOverException();
     }
 
+    /**
+     * Getters and Setters
+     */
     public int getBerries() {
         return berries;
     }

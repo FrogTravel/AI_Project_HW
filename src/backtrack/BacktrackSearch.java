@@ -29,6 +29,27 @@ public class BacktrackSearch {
         }
     }
 
+
+    /**
+     * Recursive Backtrack algorithm
+     * Steps - number of steps (operations) already made by algorithm
+     * if more than 100, break; RRH cannot make more than 81 step, but to be sure ^^
+     *
+     * if we reach Granny position, return true; Recursive breaks;
+     * if we reach Wolf, return false;
+     * if we reach Bear, return false;
+     * Berries are substracted in RRH class
+     *
+     * For each way where she can go (i.e. UP, DOWN, RIGHT, LEFT)
+     * If she can go there(i.e there is no wolf...) go there, and try to find solution
+     * (call findPath(new list of positions) from this point
+     * If no solution was found, delete all "new steps" and try to move to another direction
+     *
+     * In the case RRH got her self into corner, move backward, with already visited path
+     *
+     * @param testSolution partial Solution that we already have
+     * @return true if solution was found, false if no solution was found
+     */
     public boolean findPath(List<Position> testSolution){
 
         if(steps > 100){
@@ -45,6 +66,7 @@ public class BacktrackSearch {
         }
 
 
+        //For moving Up
         try {
             if (rrh.canGoUp() && !field.isOpen(rrh.getPosition().getX() - 1, rrh.getPosition().getY())
                     && !field.getCell(rrh.getPosition().getX() - 1, rrh.getPosition().getY()).isBear()
@@ -70,6 +92,7 @@ public class BacktrackSearch {
             }
         }catch (ArrayIndexOutOfBoundsException e){}
 
+        //For moving Right
         try {
             if (rrh.canGoRight() && !field.isOpen(rrh.getPosition().getX(), rrh.getPosition().getY() + 1)
                     && !field.getCell(rrh.getPosition().getX(), rrh.getPosition().getY() + 1).isBear()
@@ -96,6 +119,8 @@ public class BacktrackSearch {
             }
         }catch (ArrayIndexOutOfBoundsException e){}
 
+
+        //For moving Down
         try {
             if (rrh.canGoDown() && !field.isOpen(rrh.getPosition().getX() + 1, rrh.getPosition().getY())
                     && !field.getCell(rrh.getPosition().getX() + 1, rrh.getPosition().getY()).isBear()
@@ -122,6 +147,8 @@ public class BacktrackSearch {
             }
         }catch (ArrayIndexOutOfBoundsException e){}
 
+
+        //For moving Left
         try {
             if (rrh.canGoLeft() && !field.isOpen(rrh.getPosition().getX(), rrh.getPosition().getY() - 1)
                     && !field.getCell(rrh.getPosition().getX(), rrh.getPosition().getY() - 1).isBear()
@@ -149,6 +176,7 @@ public class BacktrackSearch {
         }catch (ArrayIndexOutOfBoundsException e){}
 
 
+        //If she got herself into corner
         if(isAllAroundVisited()){
             try {
 
@@ -166,6 +194,10 @@ public class BacktrackSearch {
         return false;
     }
 
+    /**
+     * Checks if all cells around her was already visited
+     * @return true if was
+     */
     public boolean isAllAroundVisited() {
         return field.isOpen(rrh.getPosition().getX(), rrh.getPosition().getY() - 1) && field.isOpen(rrh.getPosition().getX(), rrh.getPosition().getY() + 1)
             &&  field.isOpen(rrh.getPosition().getX() - 1, rrh.getPosition().getY()) && field.isOpen(rrh.getPosition().getX() + 1, rrh.getPosition().getY());
