@@ -1,129 +1,169 @@
-import astar.AStarAlgorithm;
 import astar.AStarSearch;
 import backtrack.BacktrackSearch;
-import characters.Granny;
 import characters.RRH;
-import characters.Wolf;
-import characters.WoodCutter;
 import util.*;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * TODO print wrong maps only once
+ */
+
 public class Main {
     static RRH rrh;
-    static Field field;
-    static double averageBacktrack;
-    static double averageAStar;
 
+    static String pathPictureAStar = "";
+    static String pathPictureBacktrack = "";
+
+    static double timeForAStar, timeForBacktrack;
+    static int stepsAStar, stepsBackTrack;
+
+    static PrintWriter wrongAnswerPrinter = null;
 
     public static void main(String[] args) {
-        startBacktrackSearchTests();
-        startAStarSearchTests();
-        System.out.println("Average of steps BACKTRACK: " + averageBacktrack);
-        System.out.println("Average of steps A-STAR: " + averageAStar);
-    }
+        PrintWriter printWriter = null;
+        PrintWriter prWriterAllInfo = null;
 
-    /**
-     * Running A-star algorithm for constant number of times
-     */
-    private static void startAStarSearchTests(){
-        System.out.println("A-Star SEARCH");
-        List<Integer> numberOfSteps = new LinkedList<>();
+        try {
+            printWriter = new PrintWriter("times.csv", "UTF-8");
+            prWriterAllInfo = new PrintWriter("maps.txt", "UTF-8");
+            wrongAnswerPrinter = new PrintWriter("wrongMaps.txt", "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        printWriter.print("Number of Map,Time for A*,Steps in A*,Time for Backtrack,Steps in Backtrack\n");//Columns headers for CSV file
+
         for (int k = 0; k < Constants.NUMBER_OF_TESTS; k++) {
-            field = new Field();
+            //Generation of new field
+            Field field = new Field();
             field.newField();
             field.generateField();
 
             System.out.println("Current Field: ");
             field.showField();
+            prWriterAllInfo.println(field.getStringField());
 
-            rrh = new RRH();
-            AStarSearch astar = new AStarSearch(rrh);
-            List<Position> path = astar.startSearch();
+            //Start A*
+            startAStarSearchTests(field);
+            prWriterAllInfo.println(pathPictureAStar);
 
-            System.out.println("Path: ");
-            for (int i = 0; i < path.size(); i++) {
-                System.out.println(path.get(i).getX() + " " + path.get(i).getY());
-            }
+            //Start Backtrack
+            startBacktrackSearchTests(field);
+            prWriterAllInfo.println(pathPictureBacktrack);
 
-            numberOfSteps.add(path.size());
+            System.out.println("A-Star: " + timeForAStar + " Backtrack: " + timeForBacktrack);
 
-            System.out.println("-------------------------------------");
-            System.out.println("Path picture: ");
-            for (int i = 0; i < Constants.FIELD_SIZE; i++) {
-                for (int j = 0; j < Constants.FIELD_SIZE; j++) {
-                    if (path.contains(new Position(i, j)))
-                        System.out.print(Constants.PATH_SYMBOL + "   ");
-                    else
-                        System.out.print(Constants.GRASS_SYMBOL + "   ");
+            printWriter.print("#" + k + "," + timeForAStar + "," + stepsAStar + "," + timeForBacktrack + "," + stepsBackTrack + "\n");
+
+        }
+        printWriter.close();
+        prWriterAllInfo.close();
+        wrongAnswerPrinter.close();
+    }
+
+    /**
+     * Running A-star algorithm for constant number of times
+     */
+    private static void startAStarSearchTests(Field field) {
+        System.out.println("A-Star SEARCH");
+
+
+        rrh = new RRH();
+        long start = System.nanoTime();
+        AStarSearch astar = new AStarSearch(rrh);
+        long finish = System.nanoTime();
+        List<Position> path = astar.startSearch();
+
+        System.out.println("Path: ");
+        for (int i = 0; i < path.size(); i++) {
+            System.out.println(path.get(i).getX() + " " + path.get(i).getY());
+        }
+
+        stepsAStar = path.size();
+        if(path.size() == 1)
+            wrongAnswerPrinter.println(field.getStringField());
+
+        System.out.println("-------------------------------------");
+        System.out.println("Path picture A-star: ");
+        pathPictureAStar += "Path picture A-star: \n";
+        for (int i = 0; i < Constants.FIELD_SIZE; i++) {
+            for (int j = 0; j < Constants.FIELD_SIZE; j++) {
+                if (path.contains(new Position(i, j))) {
+                    System.out.print(Constants.PATH_SYMBOL + "   ");
+                    pathPictureAStar += Constants.PATH_SYMBOL + "   ";
+                } else {
+                    System.out.print(Constants.GRASS_SYMBOL + "   ");
+                    pathPictureAStar += Constants.GRASS_SYMBOL + "   ";
                 }
-                System.out.println();
-                System.out.println();
             }
-            System.out.println("-------------------------------------");
+            System.out.println();
+            System.out.println();
+            pathPictureAStar += "\n\n";
         }
+        System.out.println("-------------------------------------");
+        System.out.println("Time of A-Star algorithm: " + (finish - start));
+        timeForAStar = finish - start;
 
-        for (int i = 0; i < numberOfSteps.size(); i++) {
-            averageAStar += numberOfSteps.get(i);
-        }
-
-        averageAStar /= numberOfSteps.size();
     }
 
     /**
      * Running Backtrack algorithm for constant number of times
      */
-    private static void startBacktrackSearchTests(){
+    private static void startBacktrackSearchTests(Field field) {
         System.out.println("BACKTRACK SEARCH");
-        List<Integer> numberOfSteps = new LinkedList<>();
-        for (int k = 0; k < Constants.NUMBER_OF_TESTS; k++) {
-            System.out.println("--------- TEST NUMBER: " + (k + 1) + " -----------");
 
-            field = new Field();
-            field.newField();
-            field.generateField();
-            field.showField();
+        rrh = new RRH();
 
-            rrh = new RRH();
+        List<Position> pos = new LinkedList<>();
+        pos.add(new Position(rrh.getPosition().getX(), rrh.getPosition().getY()));
 
-            List<Position> pos = new LinkedList<>();
-            pos.add(new Position(rrh.getPosition().getX(), rrh.getPosition().getY()));
+        long start = System.nanoTime();
+        BacktrackSearch backtrackSearch = new BacktrackSearch(rrh);
+        boolean isPath = backtrackSearch.findPath(pos);
+        long finish = System.nanoTime();
 
-            BacktrackSearch backtrackSearch = new BacktrackSearch(rrh);
+        if (!isPath) {
+            System.out.println("No solution!!!!");
+            wrongAnswerPrinter.println(field.getStringField());
+        } else {
 
-            if (!backtrackSearch.findPath(pos))
-                System.out.println("No solution!!!!");
-            else {
-
-                System.out.println("Path: ");
-                for (int i = 0; i < pos.size(); i++) {
-                    System.out.println(pos.get(i).getX() + " " + pos.get(i).getY());
-                }
-
-                numberOfSteps.add(pos.size());
-                System.out.println("Number of steps: " + pos.size());
-
-                System.out.println("-------------------------------------");
-                System.out.println("Path picture: ");
-                for (int i = 0; i < Constants.FIELD_SIZE; i++) {
-                    for (int j = 0; j < Constants.FIELD_SIZE; j++) {
-                        if (pos.contains(new Position(i, j)))
-                            System.out.print(Constants.PATH_SYMBOL + "   ");
-                        else
-                            System.out.print(Constants.GRASS_SYMBOL + "   ");
-                    }
-                    System.out.println();
-                    System.out.println();
-                }
-                System.out.println("-------------------------------------");
+            System.out.println("Path: ");
+            for (int i = 0; i < pos.size(); i++) {
+                System.out.println(pos.get(i).getX() + " " + pos.get(i).getY());
             }
-        }
 
-        for (int i = 0; i < numberOfSteps.size(); i++) {
-            averageBacktrack += numberOfSteps.get(i);
+            System.out.println("Number of steps: " + pos.size());
+            stepsBackTrack = pos.size();
+
+            System.out.println("-------------------------------------");
+            System.out.println("Path picture Backtrack: ");
+            pathPictureBacktrack += "Path picture Backtrack: \n";
+            for (int i = 0; i < Constants.FIELD_SIZE; i++) {
+                for (int j = 0; j < Constants.FIELD_SIZE; j++) {
+                    if (pos.contains(new Position(i, j))) {
+                        System.out.print(Constants.PATH_SYMBOL + "   ");
+                        pathPictureBacktrack += Constants.PATH_SYMBOL + "   ";
+                    } else {
+                        System.out.print(Constants.GRASS_SYMBOL + "   ");
+                        pathPictureBacktrack += Constants.GRASS_SYMBOL + "   ";
+                    }
+                }
+                System.out.println();
+                System.out.println();
+                pathPictureBacktrack += "\n\n";
+            }
+            System.out.println("-------------------------------------");
+
+            System.out.println("Time of Backtrack algorithm: " + (finish - start));
+            timeForBacktrack = finish - start;
         }
-        averageBacktrack /= numberOfSteps.size();
 
 
     }

@@ -139,7 +139,7 @@ public class AStarSearch {
 
             Cell upCell = null, downCell = null, leftCell = null, rightCell = null;
 
-            //Get neighbour cells (if can not OutOfBoundException
+            //Get neighbour cells (if can not OutOfBoundException)
             try {
                 upCell = rrhField.getCell(current.getPosition().getX(), current.getPosition().getY() - 1);
             }catch (ArrayIndexOutOfBoundsException e){}

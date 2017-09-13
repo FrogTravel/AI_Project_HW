@@ -16,5 +16,5 @@ public class Constants {
     public final static int OPEN_CELL = 1;
     public final static int BAD_CELL = 2;//Better not to go there
 
-    public final static int NUMBER_OF_TESTS = 1000;
+    public final static int NUMBER_OF_TESTS = 100;
 }

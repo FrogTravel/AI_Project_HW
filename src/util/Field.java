@@ -241,4 +241,25 @@ public class Field {
         return field[Granny.getPosition().getX()][Granny.getPosition().getY()];
     }
 
+    public String getStringField() {
+        String result = "";
+        for (int i = 0; i < field.length; i++) {
+
+            result += "\n";
+
+            for (int j = 0; j < field.length; j++) {
+                if(field[i][j].isFree())
+                    result += " " + Constants.EMPTY_SYMBOL + "  ";
+                else
+                    result += field[i][j].getStatuses() + " ";
+            }
+            result += "\n";
+        }
+        for (int j = 0; j < field.length*4 + 1; j++) {
+            result += "-";
+        }
+        result += "\n";
+        return result;
+    }
+
 }
