@@ -2,7 +2,6 @@ package astar;
 
 import characters.Granny;
 import characters.RRH;
-import characters.WoodCutter;
 import util.Cell;
 import util.Constants;
 import util.Field;
@@ -177,6 +176,7 @@ public class AStarSearch {
                 rightCell = rrhField.getCell(current.getPosition().getX() + 1, current.getPosition().getY());
             }catch (ArrayIndexOutOfBoundsException e){}
 
+            //Checks for traversable or not traversable cell
             if((upCell != null) && ((upCell.isWolf()) || (upCell.isBear()))&& (upNeighbour != null)) {
                 upNeighbour.setTraversable(false);
             }
@@ -190,6 +190,7 @@ public class AStarSearch {
                 rightNeighbour.setTraversable(false);
             }
 
+            //For all possible neighbours of cell if they are traversable, I wonder will you read this, please let me know
             if ((downNeighbour != null) && (downNeighbour.isTraversable()) && ((!downNeighbour.isOpen()) || (current.getGCost() > countGCost(current, downNeighbour)))) {//if neighbour cell is closed(not evaluated) or
                 downNeighbour.setCosts(countGCost(current, downNeighbour), countHCost(downNeighbour, goal));
                 downNeighbour.setOpen(true);

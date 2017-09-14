@@ -6,15 +6,15 @@ import util.Position;
  * Node for A-Star algorithm
  */
 public class StarNode {
-    private boolean isOpen = false;
-    private boolean traversable = true;
+    private boolean isOpen = false;//Was this node already visited
+    private boolean traversable = true;//Is this node traversable
 
-    private int FCost = -1;
-    private int GCost = -1;
-    private int HCost = -1;
+    private int FCost = -1;//F-Cost = G-Cost + H-Cost
+    private int GCost = -1;//Distance between node and current node
+    private int HCost = -1;//Distance between node and goal node
 
-    private Position position;
-    private StarNode parent = null;
+    private Position position;//Position of this node
+    private StarNode parent = null;//Parent of this node
 
     public StarNode() {
         position = new Position(-1, -1);
@@ -69,6 +69,9 @@ public class StarNode {
         this.position.setY(y);
     }
 
+    /**
+     * Also counts F-cost
+     */
     public void setCosts(int Gcost, int Hcost) {
         this.GCost = Gcost;
         this.HCost = Hcost;
