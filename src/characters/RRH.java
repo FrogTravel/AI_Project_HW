@@ -63,7 +63,7 @@ public class RRH {
      * She change her position to one cell Right,
      * checks her current cell
      */
-    public void goRight()  {
+    public void goRight() {
         Position oldPosition = new Position(position.getX(), position.getY());
         position.change(position.getX(), position.getY() + 1);
         field.addOpenCell(position);
@@ -75,7 +75,7 @@ public class RRH {
      * She change her position to one cell Left,
      * checks her current cell
      */
-    public void goLeft()  {
+    public void goLeft() {
         Position oldPosition = new Position(position.getX(), position.getY());
         position.change(position.getX(), position.getY() - 1);
         field.addOpenCell(position);
@@ -86,21 +86,21 @@ public class RRH {
     /**
      * Checks if current cell s busy with someone and acts
      */
-    private void checkCurrentCell()  {
-        if(field.getCell(position).getStatuses().contains(Status.WOLF_RANGE))//TODO make more beautiful
-           // throw new util.exceptions.GameOverException();
-        if(field.getCell(position).getStatuses().contains(Status.BEAR_RANGE)) {
-            berries -= 2;
-        }
-        if(field.getCell(position).getStatuses().contains(Status.WOOD_CUTTER)) {
+    private void checkCurrentCell() {
+        if (field.getCell(position).getStatuses().contains(Status.WOLF_RANGE))//TODO make more beautiful
+            // throw new util.exceptions.GameOverException();
+            if (field.getCell(position).getStatuses().contains(Status.BEAR_RANGE)) {
+                berries -= 2;
+            }
+        if (field.getCell(position).getStatuses().contains(Status.WOOD_CUTTER)) {
             realWoodCutterPosition = position;
             berries = 6;
         }
-        if((field.getCell(position).getStatuses().contains(Status.GRANNY)) && (berries == 6));
-            //throw new util.exceptions.GameWinException();
+        if ((field.getCell(position).getStatuses().contains(Status.GRANNY)) && (berries == 6)) ;
+        //throw new util.exceptions.GameWinException();
 
-        if (berries == 0);
-           // throw new util.exceptions.GameOverException();
+        if (berries == 0) ;
+        // throw new util.exceptions.GameOverException();
     }
 
     /**
@@ -122,11 +122,11 @@ public class RRH {
         return (position.getY() + 1 < Constants.FIELD_SIZE);
     }
 
-    public boolean canGoLeft(){
+    public boolean canGoLeft() {
         return (position.getY() - 1 >= 0);
     }
 
-    public boolean canGoDown(){
+    public boolean canGoDown() {
         return (position.getX() + 1 < Constants.FIELD_SIZE);
     }
 
@@ -134,7 +134,7 @@ public class RRH {
         Position oldPosition = this.position;
         this.position = position;
 
-        field.changeRRHposition(oldPosition,position);
+        field.changeRRHposition(oldPosition, position);
         field.addOpenCell(position);
         checkCurrentCell();
     }

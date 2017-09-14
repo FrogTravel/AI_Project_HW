@@ -20,7 +20,7 @@ import java.util.Random;
 public class Field {
     protected static Cell[][] field;
 
-    public void newField(){
+    public void newField() {
         field = new Cell[Constants.FIELD_SIZE][Constants.FIELD_SIZE];
         initializeField();
     }
@@ -28,7 +28,7 @@ public class Field {
     /**
      * Generate new random field
      */
-    public void generateField(){
+    public void generateField() {
         initializeField();
 
         generateWolfPosition();
@@ -55,20 +55,20 @@ public class Field {
     /**
      * Print field
      */
-    public void showField(){
+    public void showField() {
         for (int i = 0; i < field.length; i++) {
 
             System.out.println();
 
             for (int j = 0; j < field.length; j++) {
-                if(field[i][j].isFree())
+                if (field[i][j].isFree())
                     System.out.print(" " + Constants.EMPTY_SYMBOL + "  ");
                 else
                     System.out.print(field[i][j].getStatuses() + " ");
             }
             System.out.println();
         }
-        for (int j = 0; j < field.length*4 + 1; j++) {
+        for (int j = 0; j < field.length * 4 + 1; j++) {
             System.out.print("-");
         }
         System.out.println();
@@ -78,7 +78,7 @@ public class Field {
     /**
      * Generation random position of characters.Granny
      */
-    private void generateGrannyPosition(){
+    private void generateGrannyPosition() {
         Random random = new Random();
         int x;
         int y;
@@ -86,7 +86,7 @@ public class Field {
         do {
             x = random.nextInt(Constants.FIELD_SIZE);
             y = random.nextInt(Constants.FIELD_SIZE);
-        }while (!field[x][y].isFree());
+        } while (!field[x][y].isFree());
 
         field[x][y].addStatus(Status.GRANNY);
         Granny.setPosition(new Position(x, y));
@@ -104,7 +104,7 @@ public class Field {
     /**
      * Generation random position of characters.Bear and its range
      */
-    private void generateBearPosition(){
+    private void generateBearPosition() {
         Bear bear = new Bear();
         bear.generatePosition(this);
         bear.generateField(this);
@@ -114,12 +114,12 @@ public class Field {
     /**
      * Generates wood cutter position
      */
-    private void generateWoodCutter(){
+    private void generateWoodCutter() {
         Random random = new Random();
         int x;
         int y;
 
-        do{
+        do {
             x = random.nextInt(Constants.FIELD_SIZE);
             y = random.nextInt(Constants.FIELD_SIZE);
         } while (!field[x][y].isFree());
@@ -133,12 +133,12 @@ public class Field {
     /**
      * Generates false wood cutter position
      */
-    private void generateFalseWoodCutter(){
+    private void generateFalseWoodCutter() {
         Random random = new Random();
         int x;
         int y;
 
-        do{
+        do {
             x = random.nextInt(Constants.FIELD_SIZE);
             y = random.nextInt(Constants.FIELD_SIZE);
         } while (!field[x][y].isFree());
@@ -150,6 +150,7 @@ public class Field {
 
     /**
      * Delete old position from field, and adds new position to new cell
+     *
      * @param oldPosition where RRH was
      * @param newPosition where she will be
      */
@@ -157,7 +158,7 @@ public class Field {
         try {
             field[oldPosition.getX()][oldPosition.getY()].deleteCharacter(Status.RRH);
             field[newPosition.getX()][newPosition.getY()].addStatus(Status.RRH);
-        }catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Old Position: " + oldPosition.getX() + " " + oldPosition.getY());
             System.out.println("New Position: " + newPosition.getX() + " " + newPosition.getY());
         }
@@ -169,15 +170,15 @@ public class Field {
      */
 
 
-    public void setRRHPosition(Position position){
+    public void setRRHPosition(Position position) {
         field[position.getX()][position.getY()].addStatus(Status.RRH);
     }
 
-    public Cell getCell(Position position){
+    public Cell getCell(Position position) {
         return field[position.getX()][position.getY()];
     }
 
-    public Cell getCell(int x, int y){
+    public Cell getCell(int x, int y) {
         return field[x][y];
     }
 
@@ -203,14 +204,14 @@ public class Field {
             result += "\n";
 
             for (int j = 0; j < field.length; j++) {
-                if(field[i][j].isFree())
+                if (field[i][j].isFree())
                     result += " " + Constants.EMPTY_SYMBOL + "  ";
                 else
                     result += field[i][j].getStatuses() + " ";
             }
             result += "\n";
         }
-        for (int j = 0; j < field.length*4 + 1; j++) {
+        for (int j = 0; j < field.length * 4 + 1; j++) {
             result += "-";
         }
         result += "\n";

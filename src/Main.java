@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-
 public class Main {
     static RRH rrh;
 
@@ -22,6 +21,12 @@ public class Main {
 
     static PrintWriter wrongAnswerPrinter = null;
 
+
+    /**
+     * Making new PrintWriter objects, to be able to print data to file
+     * Make loop NUMBER_OF_TESTS (see Constants class) times
+     * @param args
+     */
     public static void main(String[] args) {
         PrintWriter printWriter = null;
         PrintWriter prWriterAllInfo = null;
@@ -86,7 +91,7 @@ public class Main {
 
         stepsAStar = path.size();
         //TODO Delete
-        if(path.size() == 1) {//No solution was found
+        if (path.size() == 1) {//No solution was found
             wrongAnswerPrinter.println("A Star Failed");
             wrongAnswerPrinter.println(field.getStringField());
         }

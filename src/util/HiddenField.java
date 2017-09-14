@@ -7,17 +7,20 @@ import util.Position;
 
 /**
  * For characters use, so they cannot have full access to all field
+ * They can see only those cells that has OPEN status (see Constants class)
+ * So we know exactly, with mask, where RRH has already been and where she has not
  */
 public class HiddenField extends Field {
     private int[][] mask = new int[Constants.FIELD_SIZE][Constants.FIELD_SIZE];
 
     /**
      * Returns cell on current position
+     *
      * @param position position of that cell
      * @return empty cell if it is closed TODO maybe null (!Sic)
      */
-    public Cell getCell(Position position){
-        if(mask[position.getX()][position.getY()] == Constants.OPEN_CELL){
+    public Cell getCell(Position position) {
+        if (mask[position.getX()][position.getY()] == Constants.OPEN_CELL) {
             return field[position.getX()][position.getY()];
         }
         return new Cell();
@@ -25,6 +28,7 @@ public class HiddenField extends Field {
 
     /**
      * Open cell on field
+     *
      * @param position where to open
      */
     public void addOpenCell(Position position) {
@@ -32,44 +36,47 @@ public class HiddenField extends Field {
     }
 
     /**
-     * Overrided method
      * Displays only those cells that are already open
      */
-    public void showField(){
+    public void showField() {
         for (int i = 0; i < field.length; i++) {
 
             System.out.println();
 
             for (int j = 0; j < field.length; j++) {
-//                if(field[i][j].isGranny()) {
-//                    System.out.println(field[i][j].getStatuses() + "| ");
-//                    break;
-//                }
-                if(mask[i][j] == Constants.CLOSED_CELL)
+                if (mask[i][j] == Constants.CLOSED_CELL)
                     System.out.print(" " + Constants.CLOSED_SYMBOL + "  ");
-                else if(field[i][j].isFree())
+                else if (field[i][j].isFree())
                     System.out.print(" " + Constants.EMPTY_SYMBOL + "  ");
                 else
                     System.out.print(field[i][j].getStatuses() + " ");
             }
             System.out.println();
         }
-        for (int j = 0; j < field.length*4 + 1; j++) {
+        for (int j = 0; j < field.length * 4 + 1; j++) {
             System.out.print("-");
         }
         System.out.println();
     }
 
-    public boolean isOpen(int i, int y) {
+    /**
+     * @param x coordinate of requested cell
+     * @param y coordinate of requested cell
+     * @return true if this cell is open (this cell was visited, and agent knows about this cell)
+     */
+    public boolean isOpen(int x, int y) {
         try {
-            return mask[i][y] == Constants.OPEN_CELL;
-        }catch (ArrayIndexOutOfBoundsException e){
+            return mask[x][y] == Constants.OPEN_CELL;
+        } catch (ArrayIndexOutOfBoundsException e) {
             return true;
         }
 
     }
 
-    public void setAllCellsClosed(){
+    /**
+     * "Restart" field, set all cells to close (Agent has not visited it)
+     */
+    public void setAllCellsClosed() {
         for (int i = 0; i < Constants.FIELD_SIZE; i++) {
             for (int j = 0; j < Constants.FIELD_SIZE; j++) {
                 mask[i][j] = Constants.CLOSED_CELL;
@@ -78,7 +85,13 @@ public class HiddenField extends Field {
         }
     }
 
-    public void setClosed(int i, int j) {
-        mask[i][j] = Constants.OPEN_CELL;
+    /**
+     * Set this cell to closed status (agent was not here)
+     *
+     * @param x coordinate of requested cell
+     * @param y coordinate of requested cell
+     */
+    public void setClosed(int x, int y) {
+        mask[x][y] = Constants.OPEN_CELL;
     }
 }
