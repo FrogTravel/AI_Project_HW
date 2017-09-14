@@ -36,7 +36,7 @@ public class Wolf {
     }
 
     /**
-     * Generates detection range around bear
+     * Generates detection range around wolf
      */
     public void generateField(Field field){
         int x = position.getX();

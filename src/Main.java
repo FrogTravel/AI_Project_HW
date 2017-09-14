@@ -25,6 +25,7 @@ public class Main {
     /**
      * Making new PrintWriter objects, to be able to print data to file
      * Make loop NUMBER_OF_TESTS (see Constants class) times
+     *
      * @param args
      */
     public static void main(String[] args) {

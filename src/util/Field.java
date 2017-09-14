@@ -4,10 +4,6 @@ import characters.Bear;
 import characters.Granny;
 import characters.Wolf;
 import characters.WoodCutter;
-import util.Cell;
-import util.Constants;
-import util.Position;
-import util.Status;
 
 import java.util.Random;
 
@@ -79,17 +75,8 @@ public class Field {
      * Generation random position of characters.Granny
      */
     private void generateGrannyPosition() {
-        Random random = new Random();
-        int x;
-        int y;
-
-        do {
-            x = random.nextInt(Constants.FIELD_SIZE);
-            y = random.nextInt(Constants.FIELD_SIZE);
-        } while (!field[x][y].isFree());
-
-        field[x][y].addStatus(Status.GRANNY);
-        Granny.setPosition(new Position(x, y));
+        Granny granny = new Granny();
+        granny.generatePosition(this);
     }
 
     /**

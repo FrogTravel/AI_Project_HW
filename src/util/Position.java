@@ -19,18 +19,19 @@ public class Position {
     /**
      * Change position to new one
      * To cases when not sure coordinates will be within the field
+     *
      * @param x new x coordinate
      * @param y new y coordinate
      */
     public void change(int x, int y) {
-        if(x >= Constants.FIELD_SIZE)
+        if (x >= Constants.FIELD_SIZE)
             x = Constants.FIELD_SIZE - 1;
-        if(y >= Constants.FIELD_SIZE)
+        if (y >= Constants.FIELD_SIZE)
             y = Constants.FIELD_SIZE - 1;
 
-        if(x < 0)
+        if (x < 0)
             x = 0;
-        if(y < 0)
+        if (y < 0)
             y = 0;
 
         this.x = x;
@@ -62,6 +63,6 @@ public class Position {
     public boolean equals(Object o) {
         Position position = (Position) o;
 
-        return  (this.getX() == position.getX()) && (this.getY() == position.getY());
+        return (this.getX() == position.getX()) && (this.getY() == position.getY());
     }
 }

@@ -6,11 +6,18 @@ import java.util.Random;
 
 /**
  * Created by ekaterina on 8/30/17.
+ * Wood cutter
+ * He generates in the field class
+ * If RRH comes to WC, and it is his real position, he gives her back all her berries.
+ * It is handled in RRH class
  */
 public class WoodCutter {
-    private static Position realPosition;
-    private static Position falsePosition;
+    private static Position realPosition;//Real position of woodcutter
+    private static Position falsePosition;//False position of woodcutter
 
+    /**
+     * Getters and Setters
+     */
     public static Position getRealPosition() {
         return realPosition;
     }
@@ -27,9 +34,11 @@ public class WoodCutter {
         WoodCutter.falsePosition = falsePosition;
     }
 
+    /**
+     * @return array of random ordered position
+     */
     public static Position[] getPositions() {
         Random random = new Random();
-
 
         if(random.nextBoolean()){
             return new Position[]{realPosition, falsePosition};
