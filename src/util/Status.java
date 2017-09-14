@@ -2,6 +2,7 @@ package util;
 
 /**
  * Created by ekaterina on 8/30/17.
+ * Different statuses to use of Field
  */
 public class Status {
     public static final int FREE = 0;

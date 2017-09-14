@@ -2,6 +2,7 @@ package util;
 
 /**
  * Created by ekaterina on 8/30/17.
+ * Class for storing position on map
  */
 public class Position {
     private int x;
