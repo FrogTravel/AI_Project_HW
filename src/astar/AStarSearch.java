@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by ekaterina on 9/9/17.
+ * A* implementation
  */
 public class AStarSearch {
     private RRH rrh;
@@ -33,6 +34,11 @@ public class AStarSearch {
 
     }
 
+    /**
+     * Wrapper for search to encapsulate algorithm
+     * To use A* you need to call this method
+     * @return path that A* found
+     */
     public List<Position> startSearch(){
         steps = 0;
         findPath();
@@ -54,6 +60,26 @@ public class AStarSearch {
         return positions;
     }
 
+    /**
+     * A-star algorithm
+     * Make new array of special nodes for A*
+     * Set position to all those nodes
+     * Make new current star node
+     * Add current to opened array list
+     *
+     * Start A* loop
+     * In case if there are too much steps already, which mean something went wrong, probably there is no way out
+     * loop will break
+     *
+     * Current is the lowest node from opened array list
+     * Delete current from opened array list and set current to not traversable anymore
+     * For all possible neighbours of current cell
+     * If new path is shorter, update path length
+     * Set parent of neighbour to current
+     * If neighbour is in closed and is traversable
+     * Add to opened, count path length
+     * endloop
+     */
     private void findPath(){
         field = new StarNode[Constants.FIELD_SIZE][Constants.FIELD_SIZE];
 
@@ -78,8 +104,6 @@ public class AStarSearch {
 
         Field rrhField = rrh.getField();
         while(true) {
-
-
             steps++;
             if(steps > 100) {//something went wrong
                 rrh.getField().showField();
@@ -97,11 +121,8 @@ public class AStarSearch {
 
             rrh.setPosition(current.getPosition());//Change position of rrh to current cell
 
-            Cell currentCell = rrhField.getCell(current.getPosition().getX(), current.getPosition().getY());//Get current cell
+            current.setTraversable(false);
 
-            current.setTraversable(false);//TODO not sure this is right
-
-            //printField(current.getPosition());
 
             //If we have reach the goal
             if((current.getPosition().getX() == goal.getPosition().getX()) && (current.getPosition().getY() == goal.getPosition().getY())){
@@ -193,14 +214,15 @@ public class AStarSearch {
                 upNeighbour.setParent(current);
                 opened.add(upNeighbour);
             }
-
-
         }
     }
 
 
-
-
+    /**
+     * Find lowest F-cost (Sum of H-cost and G-cost)
+     * @param opened where to find it
+     * @return Star node with the lowest F-Cost
+     */
     private StarNode findLowestFCost(List<StarNode> opened) {
         StarNode min = new StarNode();
         min.setFCost(1000000);
@@ -212,23 +234,26 @@ public class AStarSearch {
         return min;
     }
 
+    /**
+     * Path length from current node to neighbour node * 10
+     * Counts as difference between coordinates of X axis + difference between coordinated of Y axis
+     * @param current node
+     * @param neighbour node
+     * @return path length
+     */
     private int countGCost(StarNode current, StarNode neighbour) {
         return (Math.abs(current.getPosition().getX() - neighbour.getPosition().getX()) + Math.abs(current.getPosition().getY() - neighbour.getPosition().getY())) * 10;
     }
 
+    /**
+     * Path length from node to goal node * 10
+     * Counts as difference between coordinates of X axis + difference between coordinated of Y axis
+     * @param current node
+     * @param goal node
+     * @return path length
+     */
     private int countHCost(StarNode current, StarNode goal) {
         return (Math.abs(current.getPosition().getX() - goal.getPosition().getX()) + Math.abs(current.getPosition().getY() - goal.getPosition().getY())) * 10;
     }
 
-    private void printField(Position current){
-        for (int i = 0; i < Constants.FIELD_SIZE; i++) {
-            for (int j = 0; j < Constants.FIELD_SIZE; j++) {
-                if((i == current.getX()) && (j == current.getY()))
-                    System.out.print("[c]");
-                System.out.print(field[i][j].getFCost() + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("-----------------------------");
-    }
 }

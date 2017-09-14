@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by ekaterina on 9/10/17.
+ * Backtrack class
  */
 public class BacktrackSearch {
     private RRH rrh;
