@@ -19,7 +19,6 @@ public class Main {
     static double timeForAStar, timeForBacktrack;
     static int stepsAStar, stepsBackTrack;
 
-    static PrintWriter wrongAnswerPrinter = null;
 
 
     /**
@@ -35,7 +34,6 @@ public class Main {
         try {
             printWriter = new PrintWriter("times.csv", "UTF-8");
             prWriterAllInfo = new PrintWriter("maps.txt", "UTF-8");
-            wrongAnswerPrinter = new PrintWriter("wrongMaps.txt", "UTF-8");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
@@ -69,7 +67,6 @@ public class Main {
         }
         printWriter.close();
         prWriterAllInfo.close();
-        wrongAnswerPrinter.close();
     }
 
     /**
@@ -91,11 +88,6 @@ public class Main {
         }
 
         stepsAStar = path.size();
-        //TODO Delete
-        if (path.size() == 1) {//No solution was found
-            wrongAnswerPrinter.println("A Star Failed");
-            wrongAnswerPrinter.println(field.getStringField());
-        }
 
         System.out.println("-------------------------------------");
         System.out.println("Path picture A-star: ");
@@ -138,8 +130,6 @@ public class Main {
 
         if (!isPath) {
             System.out.println("No solution!!!!");
-            wrongAnswerPrinter.println("Backtrack Failed");
-            wrongAnswerPrinter.println(field.getStringField());//TODO Delete
         } else {
 
             System.out.println("Path: ");
