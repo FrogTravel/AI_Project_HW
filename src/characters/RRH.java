@@ -7,15 +7,18 @@ import util.Status;
 
 /**
  * Created by ekaterina on 8/30/17.
+ * Red Riding Hood class
+ * woodCutterPosition[] is for possible positions of woodcutter
+ * real WoodCutter position is null until RRH will step in the cell with the wood cutter
  */
 public class RRH {
-    private Position grannyPosition;
-    private Position[] woodCutterPosition;
-    private Position realWoodCutterPosition;
-    private HiddenField field;
+    private Position grannyPosition; //Granny's position
+    private Position[] woodCutterPosition;//Possible woodcutter positions
+    private Position realWoodCutterPosition;//Real woodcutter position
+    private HiddenField field;//Hidden field of RRH
 
-    private int berries = 6;
-    private Position position;
+    private int berries = 6;//Berries that she has
+    private Position position;//Position of RRH
 
     public RRH() {
         field = new HiddenField();

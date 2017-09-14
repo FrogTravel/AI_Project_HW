@@ -9,10 +9,17 @@ import java.util.Random;
 
 /**
  * Created by ekaterina on 9/3/17.
+ * Wolf class that can generate position and detection range
  */
 public class Wolf {
     private static Position position = new Position();
 
+    /**
+     * Generate new position of wolf
+     * Request random int position in the size of field
+     * Checks if this position is not blocking for RRH
+     * And if it is free places bear there
+     */
     public void generatePosition(Field field){
         Random random = new Random();
         int x;
@@ -28,6 +35,9 @@ public class Wolf {
         field.setCellStatus(position, Status.WOLF);
     }
 
+    /**
+     * Generates detection range around bear
+     */
     public void generateField(Field field){
         int x = position.getX();
         int y = position.getY();
@@ -41,7 +51,15 @@ public class Wolf {
             field.setCellStatus(x, y+1, Status.WOLF_RANGE);
     }
 
+
+    /**
+     * Getters and setters
+     */
     public static Position getPosition() {
         return position;
+    }
+
+    public static void setPosition(Position position) {
+        Wolf.position = position;
     }
 }

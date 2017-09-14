@@ -9,9 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * TODO print wrong maps only once
- */
+
 
 public class Main {
     static RRH rrh;
@@ -87,8 +85,11 @@ public class Main {
         }
 
         stepsAStar = path.size();
-        if(path.size() == 1)
+        //TODO Delete
+        if(path.size() == 1) {//No solution was found
+            wrongAnswerPrinter.println("A Star Failed");
             wrongAnswerPrinter.println(field.getStringField());
+        }
 
         System.out.println("-------------------------------------");
         System.out.println("Path picture A-star: ");
@@ -131,7 +132,8 @@ public class Main {
 
         if (!isPath) {
             System.out.println("No solution!!!!");
-            wrongAnswerPrinter.println(field.getStringField());
+            wrongAnswerPrinter.println("Backtrack Failed");
+            wrongAnswerPrinter.println(field.getStringField());//TODO Delete
         } else {
 
             System.out.println("Path: ");

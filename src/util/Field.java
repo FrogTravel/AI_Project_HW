@@ -1,6 +1,6 @@
 package util;
 
-import astar.Node;
+import characters.Bear;
 import characters.Granny;
 import characters.Wolf;
 import characters.WoodCutter;
@@ -13,6 +13,9 @@ import java.util.Random;
 
 /**
  * Created by ekaterina on 8/30/17.
+ * Field contain 2-dim array of Cells (see class Cell) that are containing
+ * different characters.
+ * You need to call newField and than generate Field to generate totally new field
  */
 public class Field {
     protected static Cell[][] field;
@@ -45,7 +48,6 @@ public class Field {
         for (int i = 0; i < field[0].length; i++) {
             for (int j = 0; j < field[0].length; j++) {
                 field[i][j] = new Cell();
-                //field[i][j].setFree();
             }
         }
     }
@@ -94,25 +96,6 @@ public class Field {
      * Generation random position of wolf and its range
      */
     private void generateWolfPosition() {
-//        Random random = new Random();
-//        int x;
-//        int y;
-//
-//        do {
-//            x = random.nextInt(util.Constants.FIELD_SIZE);
-//            y = random.nextInt(util.Constants.FIELD_SIZE);
-//        } while (field[x][y].isCharacter());//If this cell doesn't contain character, then we can place wolf in it
-//
-//        field[x][y].addStatus(util.Status.WOLF);
-//        if(x > 0)
-//            field[x-1][y].addStatus(util.Status.WOLF_RANGE);
-//        if(x < util.Constants.FIELD_SIZE - 1)
-//            field[x+1][y].addStatus(util.Status.WOLF_RANGE);
-//        if(y > 0)
-//            field[x][y-1].addStatus(util.Status.WOLF_RANGE);
-//        if(y < util.Constants.FIELD_SIZE - 1)
-//            field[x][y+1].addStatus(util.Status.WOLF_RANGE);
-
         Wolf wolf = new Wolf();
         wolf.generatePosition(this);
         wolf.generateField(this);
@@ -122,41 +105,10 @@ public class Field {
      * Generation random position of characters.Bear and its range
      */
     private void generateBearPosition(){
-        Random random = new Random();
-        int x;
-        int y;
+        Bear bear = new Bear();
+        bear.generatePosition(this);
+        bear.generateField(this);
 
-        do{
-            x = random.nextInt(Constants.FIELD_SIZE);
-            y = random.nextInt(Constants.FIELD_SIZE);
-        } while((field[x][y].isCharacter()) || ((x == 0) && (y == 1))
-                || ((x == 1) && (y == 0)) || ((x == 0) && (y == 0))
-                || ((x== 1) && (y == 1)));
-
-        field[x][y].addStatus(Status.BEAR);
-        if(x > 0)
-            field[x - 1][y].addStatus(Status.BEAR_RANGE);
-
-
-        if(x < Constants.FIELD_SIZE - 1)
-            field[x + 1][y].addStatus(Status.BEAR_RANGE);
-
-
-        if(y > 0)
-            field[x][y - 1].addStatus(Status.BEAR_RANGE);
-
-
-        if(y < Constants.FIELD_SIZE - 1)
-            field[x][y + 1].addStatus(Status.BEAR_RANGE);
-
-        if((x > 0) && (y > 0))
-            field[x - 1][y - 1].addStatus(Status.BEAR_RANGE);
-        if((x > 0) && (y < Constants.FIELD_SIZE - 1))
-            field[x - 1][y + 1].addStatus(Status.BEAR_RANGE);
-        if((x < Constants.FIELD_SIZE - 1) && (y > 0))
-            field[x + 1][y - 1].addStatus(Status.BEAR_RANGE);
-        if((x < Constants.FIELD_SIZE - 1) && (y < Constants.FIELD_SIZE - 1))
-            field[x + 1][y + 1].addStatus(Status.BEAR_RANGE);
     }
 
     /**
@@ -241,6 +193,9 @@ public class Field {
         return field[Granny.getPosition().getX()][Granny.getPosition().getY()];
     }
 
+    /**
+     * @return current field in form of string
+     */
     public String getStringField() {
         String result = "";
         for (int i = 0; i < field.length; i++) {
